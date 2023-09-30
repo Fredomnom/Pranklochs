@@ -7,33 +7,100 @@
     <style>
         body {
             text-align: center;
-            background-color: #000; /* Hintergrundfarbe auf Schwarz für Dark Mode */
+            background-color: #1a1a1a; /* Hintergrundfarbe für Dark Mode */
             color: #fff; /* Textfarbe auf Weiß für Dark Mode */
+            font-family: Arial, sans-serif; /* Schriftart festlegen */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
         }
 
-        h1, p {
-            margin: 0;
-            padding: 10px;
+        h1 {
+            margin-top: 10%; /* Abstand nach oben erhöhen */
+        }
+
+        .name-money-container {
+            margin-top: 15%; /* Abstand für den Namen- und Geldtext erhöhen */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Zentrieren der Texte horizontal */
+        }
+
+        .name-text {
+            font-size: 24px; /* Schriftgröße erhöhen */
+            margin: 0; /* Margin zurücksetzen */
+        }
+
+        .money-text {
+            font-size: 24px; /* Schriftgröße erhöhen */
+            margin: 0; /* Margin zurücksetzen */
+        }
+
+        .buy-button {
+            background-color: #3498db; /* Hintergrundfarbe für den Button */
+            color: #fff; /* Textfarbe für den Button */
+            border: none;
+            padding: 15px 30px; /* Innenabstand für den Button erhöhen */
+            font-size: 20px; /* Schriftgröße für den Button erhöhen */
+            text-decoration: none;
+            cursor: pointer;
+            align-self: center; /* Zentrieren des Buttons horizontal */
+            margin-top: auto; /* Abstand nach oben erhöhen */
+        }
+
+        #footer {
+            font-size: 12px;
+            margin-top: 5%; /* Abstand nach oben erhöhen */
+            margin-bottom: 5%; /* Abstand nach unten erhöhen */
+        }
+
+        .buy-button:hover {
+            background-color: #2980b9; /* Hintergrundfarbe im Hover-Zustand */
         }
     </style>
 </head>
 <body>
     <h1>PRANKLOCHS QUICK PAY</h1>
-    <p>Der Wert von <code>name</code> in der URL ist der Name des Produkts: <span id="nameValue"></span></p>
-    <p>Die Geldmenge beträgt: <span id="amountValue"></span></p>
+
+    <div class="name-money-container">
+        <p class="name-text"><span id="nameValue"></span></p>
+        <p class="money-text"><span id="amountValue"></span> 💶</p>
+    </div>
+
+    <a class="buy-button" href="#" id="buyButton">Jetzt Kaufen</a>
+
+    <div id="footer">
+        <p>Die Prankcoins gehen zu dem Nutzer mit folgender ID: <span id="transferToValue"></span></p>
+    </div>
 
     <script>
-        // JavaScript-Code, um den Wert von "name" und "amount" aus der URL auszulesen und anzuzeigen
+        // JavaScript-Code, um den Wert von "name", "amount" und "transfer_to" aus der URL auszulesen und anzuzeigen
         const params = new URLSearchParams(window.location.search);
         const nameValue = params.get("name");
-        const amountValue = params.get("amount");
+        const amountValue = parseInt(params.get("amount")); // Convert to integer
+        const transferToValue = params.get("transfer_to");
 
         if (nameValue) {
             document.getElementById("nameValue").textContent = nameValue;
         }
 
-        if (amountValue) {
+        if (!isNaN(amountValue)) { // Check if it's a valid number
             document.getElementById("amountValue").textContent = amountValue;
+        }
+
+        if (transferToValue) {
+            document.getElementById("transferToValue").textContent = transferToValue;
+        }
+
+        // JavaScript-Code, um den Kaufen-Button-Link dynamisch zu erstellen
+        const buyButton = document.getElementById("buyButton");
+        if (amountValue && transferToValue) {
+            const stateParam = encodeURIComponent(JSON.stringify({ amount: amountValue, transfer_to: transferToValue }));
+            const buyLink = `https://discord.com/oauth2/authorize?client_id=1157655228347326494&redirect_uri=https%3A%2F%2Ftrigger.macrodroid.com%2F55a6c911-0a2a-44cc-aaea-a73cad68d665%2Fdoaquickpaynow&response_type=code&scope=identify&state=${stateParam}`;
+            buyButton.href = buyLink;
         }
     </script>
 </body>
