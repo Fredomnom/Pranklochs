@@ -2,19 +2,38 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PRANKLOCHS QUICK PAY</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #000; /* Hintergrundfarbe auf Schwarz für Dark Mode */
+            color: #fff; /* Textfarbe auf Weiß für Dark Mode */
+        }
+
+        h1, p {
+            margin: 0;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>PRANKLOCHS QUICK PAY</h1>
-    <p>Der Wert von <code>name</code> in der URL ist: <span id="nameValue"></span></p>
+    <p>Der Wert von <code>name</code> in der URL ist der Name des Produkts: <span id="nameValue"></span></p>
+    <p>Die Geldmenge beträgt: <span id="amountValue"></span></p>
 
     <script>
-        // JavaScript-Code, um den Wert von "name" aus der URL auszulesen und anzuzeigen
+        // JavaScript-Code, um den Wert von "name" und "amount" aus der URL auszulesen und anzuzeigen
         const params = new URLSearchParams(window.location.search);
         const nameValue = params.get("name");
+        const amountValue = params.get("amount");
 
         if (nameValue) {
             document.getElementById("nameValue").textContent = nameValue;
+        }
+
+        if (amountValue) {
+            document.getElementById("amountValue").textContent = amountValue;
         }
     </script>
 </body>
